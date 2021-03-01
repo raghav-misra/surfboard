@@ -83,7 +83,7 @@ videoPlayer.setAttribute("width", innerWidth);
 videoPlayer.setAttribute("height", innerHeight);
 
 // Trigger video prompt:
-alert("Click anywhere to start.");
+alert("Click anywhere to start. If this is your first time, press the 'S' key to configure effects.");
 document.body.addEventListener("click", () => {
     const videoUpload = document.querySelector("#videoUpload");
 
