@@ -15,9 +15,63 @@ const _keys = (() => {
 const keyMap = Object.keys(_keys)
     .reduce((obj, key) => ({ ...obj, [_keys[key]]: key }), {});
 
+// Toggle-based effect:
+const toggleOffCallbacks = Object.create(null);
+
+function launchToggleEffect(scriptTag, effect, key) {
+    effectInProgress = false;
+    const styleTag = document.createElement("style");
+    document.head.appendChild(styleTag);
+
+    if (typeof effect.style === "string") {
+        styleTag.textContent = effect.style;
+    }
+
+    const untoggleEffect = effect.toggle();
+
+    setTimeout(() => {
+        toggleOffCallbacks[key] = () => {
+            untoggleEffect();
+            setTimeout(() => {
+                styleTag.remove();
+                scriptTag.remove();
+                console.log("Completed effect:", effect);
+
+                delete toggleOffCallbacks[key];
+            }, effect.duration[1] - 1);
+        };
+    }, effect.duration[0] - 1);
+}
+
+// Time-based effect:
+function launchDurationEffect(scriptTag, effect) {
+    const styleTag = document.createElement("style");
+    document.head.appendChild(styleTag);
+
+    if (typeof effect.template === "string") {
+        mount.innerHTML = effect.template;
+    }
+
+    if (typeof effect.style === "string") {
+        styleTag.textContent = effect.style;
+    }
+
+    if (typeof effect.script === "function") {
+        effect.script();
+    }
+
+    setTimeout(() => {
+        styleTag.remove();
+        scriptTag.remove();
+        mount.innerHTML = "";
+        console.log("Completed effect:", effect);
+        effectInProgress = false;
+    }, effect.duration - 1);
+}
+
 // Trigger effect megafunction:
 let effectInProgress = false;
-function triggerEffect(effect) {
+function triggerEffect(effect, key) {
     effectInProgress = true;
 
     const scriptTag = document.createElement("script");
@@ -26,31 +80,21 @@ function triggerEffect(effect) {
 
     scriptTag.addEventListener("load", () => {
         if (!window._currentEffect) {
-            console.log("Unable to RUN effect (load successful):", effect);
+            console.log("Unable to RUN effect (load successful, error in effect script):", effect);
             effectInProgress = false;
             return;
         }
 
-        const { template, style, script, duration } = window._currentEffect(params);
+        const effect = window._currentEffect(params);
         delete window._currentEffect;
 
-        const styleTag = document.createElement("style");
-        styleTag.textContent = style;
-        document.head.appendChild(styleTag);
-
-        mount.innerHTML = template;
-
-        if (typeof script === "function") {
-            script(mount);
+        if (typeof effect.toggle === "function") {
+            launchToggleEffect(scriptTag, effect, key);
         }
 
-        setTimeout(() => {
-            styleTag.remove();
-            scriptTag.remove();
-            mount.innerHTML = "";
-            console.log("Completed effect:", effect);
-            effectInProgress = false;
-        }, duration - 1);
+        else {
+            launchDurationEffect(scriptTag, effect);
+        }
     });
 
     scriptTag.addEventListener("error", () => {
@@ -71,9 +115,13 @@ document.body.addEventListener("keyup", e => {
         location.href = "/settings.html";
     }
 
+    else if (toggleOffCallbacks[key]) {
+        toggleOffCallbacks[key]();
+    }
+
     else if (typeof keyMap[key] === "string" && !effectInProgress) {
         console.log("Trigger effect:", keyMap[key]);
-        triggerEffect(keyMap[key]);
+        triggerEffect(keyMap[key], key);
     }
 });
 
