@@ -79,8 +79,15 @@ document.body.addEventListener("keyup", e => {
 
 // Initialize video element:
 const videoPlayer = document.querySelector("#videoPlayer");
-videoPlayer.setAttribute("width", innerWidth);
-videoPlayer.setAttribute("height", innerHeight);
+
+// Adjust player on resize:
+function adjustVideoSize() {
+    videoPlayer.setAttribute("width", innerWidth);
+    videoPlayer.setAttribute("height", innerHeight);
+}
+
+addEventListener("resize", adjustVideoSize);
+adjustVideoSize();
 
 // Trigger video prompt:
 alert("Click anywhere to start. If this is your first time, press the 'S' key to configure effects.");

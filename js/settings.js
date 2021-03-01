@@ -14,7 +14,8 @@ const app = new Vue({
     data: {
         effects: storedObjectOrDefault("effects", {
             rippleEffect: "",
-            textIntro: ""
+            textIntro: "",
+            invertVideo: ""
         }),
         params: storedObjectOrDefault("params", {
             text: ""

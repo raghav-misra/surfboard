@@ -1,4 +1,4 @@
-window._currentEffect = params => ({
+window._currentEffect = () => ({
     template: /*html*/`
     <div class="circle">
         <div class="circle">
@@ -10,9 +10,9 @@ window._currentEffect = params => ({
         main .circle {
             transform: scale(0);
             border-radius: 50%;
-            border: 10px white solid;
+            border: 50px red solid;
             display: flex;
-            box-shadow: 0 0 50px white;
+            box-shadow: 0 0 100px white;
             justify-content: center;
             align-items: center;
             animation: big 1s ease-in-out;
