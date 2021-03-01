@@ -16,7 +16,44 @@ const keyMap = Object.keys(_keys)
 // Trigger effect megafunction:
 let effectInProgress = false;
 function triggerEffect(effect) {
-    
+    effectInProgress = true;
+
+    const script = document.createElement("script");
+    script.src = `/effects/${effect}.js`;
+    script.async = true;
+
+    script.addEventListener("load", () => {
+        if (!window._currentEffect) {
+            console.log("Unable to RUN effect (load successful):", effect);
+            effectInProgress = false;
+            return;
+        }
+
+        const { html, css, duration } = window._currentEffect(params);
+        delete window._currentEffect;
+
+        const style = document.createElement("style");
+        style.textContent = css;
+        document.head.appendChild(style);
+
+        mount.innerHTML = html;
+
+        setTimeout(() => {
+            style.remove();
+            script.remove();
+            mount.innerHTML = "";
+            console.log("Completed effect:", effect);
+            effectInProgress = false;
+        }, duration - 1);
+    });
+
+    script.addEventListener("error", () => {
+        script.remove();
+        console.log("Unable to LOAD effect:", effect);
+        effectInProgress = false;
+    })
+
+    document.body.appendChild(script);
 }
 
 // Listen for key presses:
