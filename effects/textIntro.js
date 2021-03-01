@@ -45,8 +45,5 @@ window._currentEffect = params => ({
             }
         }
     `,
-    script(mount) {
-        console.log(mount);
-    },
     duration: 2000
 });
