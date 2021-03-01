@@ -1,3 +1,5 @@
+const mount = document.querySelector("main");
+
 // PARAMS map for each effect
 const params = (() => {
     try { return JSON.parse(localStorage.getItem("params") || undefined); }
