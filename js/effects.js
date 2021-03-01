@@ -67,7 +67,7 @@ document.body.addEventListener("keyup", e => {
     const key = e.key.toLowerCase();
 
     // Go to settings:q
-    if (key === "escape") {
+    if (key === "s") {
         location.href = "/settings.html";
     }
 
@@ -75,4 +75,27 @@ document.body.addEventListener("keyup", e => {
         console.log("Trigger effect:", keyMap[key]);
         triggerEffect(keyMap[key]);
     }
+});
+
+// Initialize video element:
+const videoPlayer = document.querySelector("#videoPlayer");
+videoPlayer.setAttribute("width", innerWidth);
+videoPlayer.setAttribute("height", innerHeight);
+
+// Trigger video prompt:
+alert("Click anywhere to start.");
+document.body.addEventListener("click", () => {
+    const videoUpload = document.querySelector("#videoUpload");
+
+    videoUpload.addEventListener("input", () => {
+        videoPlayer.src = URL.createObjectURL(videoUpload.files[0]);
+        alert("Playing video.");
+        setTimeout(() => {
+            videoPlayer.play();
+        }, 500);
+    });
+
+    videoUpload.click();
+}, {
+    once: true
 });

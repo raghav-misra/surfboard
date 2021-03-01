@@ -9,3 +9,12 @@ main {
     justify-content: center;
     align-items: center;
 }
+
+video {
+    position: absolute;
+    z-index: -100;
+}
+
+input[type="file"] {
+    display: none;
+}
