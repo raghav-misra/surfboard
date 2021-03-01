@@ -10,8 +10,26 @@
 </head>
 <body>
     <main id="app" class="section">
+        <h1>Surfboard Settings:</h1>
+        <hr>
+
+        <h2>Effect Keybinds:</h2>
+        <div v-for="(value, name, i) in effects" :key="name" class="effect-row">
+            <label>{{ name }}:</label>
+            <input v-model="effects[name]" placeholder="Key value." />
+        </div>
+
+        <h2>Parameters:</h2>
+        <div v-for="(value, name, i) in params" :key="name" class="effect-row">
+            <label>{{ name }}:</label>
+            <input v-model="params[name]" placeholder="No value set." />
+        </div>
+
+        <hr>
+
+        <button @click="clearData">Clear Data</button>
+        <a href="/"><button>Goto Viewer</button></a>
     </main>
-    
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="/js/settings.js"></script>
 </body>
