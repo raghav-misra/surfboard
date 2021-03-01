@@ -20,42 +20,46 @@ let effectInProgress = false;
 function triggerEffect(effect) {
     effectInProgress = true;
 
-    const script = document.createElement("script");
-    script.src = `/effects/${effect}.js`;
-    script.async = true;
+    const scriptTag = document.createElement("script");
+    scriptTag.src = `/effects/${effect}.js`;
+    scriptTag.async = true;
 
-    script.addEventListener("load", () => {
+    scriptTag.addEventListener("load", () => {
         if (!window._currentEffect) {
             console.log("Unable to RUN effect (load successful):", effect);
             effectInProgress = false;
             return;
         }
 
-        const { html, css, duration } = window._currentEffect(params);
+        const { template, style, script, duration } = window._currentEffect(params);
         delete window._currentEffect;
 
-        const style = document.createElement("style");
-        style.textContent = css;
-        document.head.appendChild(style);
+        const styleTag = document.createElement("style");
+        styleTag.textContent = style;
+        document.head.appendChild(styleTag);
 
-        mount.innerHTML = html;
+        mount.innerHTML = template;
+
+        if (typeof script === "function") {
+            script(mount);
+        }
 
         setTimeout(() => {
-            style.remove();
-            script.remove();
+            styleTag.remove();
+            scriptTag.remove();
             mount.innerHTML = "";
             console.log("Completed effect:", effect);
             effectInProgress = false;
         }, duration - 1);
     });
 
-    script.addEventListener("error", () => {
-        script.remove();
+    scriptTag.addEventListener("error", () => {
+        scriptTag.remove();
         console.log("Unable to LOAD effect:", effect);
         effectInProgress = false;
     })
 
-    document.body.appendChild(script);
+    document.body.appendChild(scriptTag);
 }
 
 // Listen for key presses:

@@ -1,5 +1,5 @@
 window._currentEffect = params => ({
-    html: /*html*/`
+    template: /*html*/`
         <svg width="100%" height="100%" style="display:none;">
             <defs>
                 <filter id="wavy" filterUnits="userSpaceOnUse" x="0" y="0">
@@ -19,7 +19,7 @@ window._currentEffect = params => ({
             ${params.text}
         </span>
     `,
-    css: /*css*/`
+    style: /*css*/`
         main .text {
             font-size: 100px;
             font-weight: bold;
@@ -45,5 +45,8 @@ window._currentEffect = params => ({
             }
         }
     `,
+    script(mount) {
+        console.log(mount);
+    },
     duration: 2000
 });

@@ -1,12 +1,12 @@
 window._currentEffect = params => ({
-    html: /*html*/`
+    template: /*html*/`
     <div class="circle">
         <div class="circle">
             <div class="circle"></div>
         </div>
     </div>
     `,
-    css: /*css*/`
+    style: /*css*/`
         main .circle {
             transform: scale(0);
             border-radius: 50%;
