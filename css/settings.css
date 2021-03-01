@@ -1,0 +1,17 @@
+main {
+    margin: 0 100px;
+}
+
+.effect-row {
+    display: flex;
+    align-items: center;
+}
+
+.effect-row label {
+    font-family: monospace;
+    flex: 0.5;
+}
+
+.effect-row input {
+    flex: 1;
+}
