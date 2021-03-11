@@ -35,7 +35,7 @@ function launchToggleEffect(scriptTag, effect, key) {
             setTimeout(() => {
                 styleTag.remove();
                 scriptTag.remove();
-                console.log("Completed effect:", effect);
+                console.log("Completed TOGGLE effect:", effect);
 
                 delete toggleOffCallbacks[key];
             }, effect.duration[1] - 1);
@@ -64,7 +64,7 @@ function launchDurationEffect(scriptTag, effect) {
         styleTag.remove();
         scriptTag.remove();
         mount.innerHTML = "";
-        console.log("Completed effect:", effect);
+        console.log("Completed DURATION effect:", effect);
         effectInProgress = false;
     }, effect.duration - 1);
 }
@@ -130,8 +130,10 @@ const videoPlayer = document.querySelector("#videoPlayer");
 
 // Adjust player on resize:
 function adjustVideoSize() {
-    videoPlayer.setAttribute("width", innerWidth);
-    videoPlayer.setAttribute("height", innerHeight);
+    document.querySelectorAll("video").forEach(v => {
+        v.setAttribute("width", innerWidth);
+        v.setAttribute("height", innerHeight);
+    });
 }
 
 addEventListener("resize", adjustVideoSize);
@@ -143,11 +145,13 @@ document.body.addEventListener("click", () => {
     const videoUpload = document.querySelector("#videoUpload");
 
     videoUpload.addEventListener("input", () => {
-        videoPlayer.src = URL.createObjectURL(videoUpload.files[0]);
+        document.querySelectorAll("video").forEach(v => v.src = URL.createObjectURL(videoUpload.files[0]));
         alert("Playing video.");
         setTimeout(() => {
             videoPlayer.play();
         }, 500);
+
+        document.querySelectorAll(".motion-blur-clone").forEach(cloneVideo => setTimeout(() => cloneVideo.play(), Number(cloneVideo.dataset.offset)));
     });
 
     videoUpload.click();

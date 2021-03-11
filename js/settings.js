@@ -15,10 +15,14 @@ const app = new Vue({
         effects: storedObjectOrDefault("effects", {
             rippleEffect: "",
             textIntro: "",
-            invertVideo: ""
+            toggleInvert: "",
+            toggleBlur: "",
+            toggleMotionBlur: ""
         }),
         params: storedObjectOrDefault("params", {
-            text: ""
+            text: "",
+            invert: "",
+            blur: ""
         })
     },
     watch: {

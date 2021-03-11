@@ -1,4 +1,4 @@
-window._currentEffect = () => ({
+window._currentEffect = ({ blur }) => ({
     style: /*css*/`
         video {
             filter: none;
@@ -8,7 +8,7 @@ window._currentEffect = () => ({
 
     toggle() {
         const video = document.querySelector("video");
-        video.style.filter = "invert(1)";
+        video.style.filter = `blur(${blur || 4}px)`;
 
         return () => {
             video.style.filter = "none";
